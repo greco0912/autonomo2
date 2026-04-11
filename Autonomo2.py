@@ -72,11 +72,14 @@ while ejecutando:
     pelota.x += vel_x
     pelota.y += vel_y
 
-    #Limitar Pelota
+    #Limitar Pelota arriba y abajo
     if pelota.top <= 0 or pelota.bottom >= 800:
         vel_y *= -1
         
-    
+
+    #Choque en Paleta o Paleta 2
+    if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
+        vel_x *= -1
 
 
     
