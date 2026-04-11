@@ -31,6 +31,13 @@ while ejecutando:
     if teclas[pygame.K_s]:
         paleta.y += 5
 
+    #Limitar paleta izquiera
+    if paleta.top < 0:
+        paleta.top = 0
+    
+    if paleta.bottom > 800:
+        paleta.bottom = 800
+
     #Movimiento Paleta Derecha
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_o]:
@@ -39,7 +46,13 @@ while ejecutando:
     if teclas[pygame.K_l]:
         paleta2.y += 5
 
-
+    #Limitar paleta derecha
+    if paleta2.top < 0:
+        paleta2.top = 0
+    
+    if paleta2.bottom > 800:
+        paleta2.bottom = 800
+    
 
     
     
