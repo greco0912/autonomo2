@@ -10,6 +10,8 @@ paleta = pygame.Rect(50, 300, 10, 100)
 
 paleta2 = pygame.Rect(940, 300, 10, 100)
 
+clock = pygame.time.Clock()
+
 while ejecutando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
@@ -22,6 +24,9 @@ while ejecutando:
     #PALETA DERECHA
     pygame.draw.rect(pantalla, (0, 0, 0), paleta2)
     pygame.display.flip()
+
+    #Limitar FPS
+    clock.tick(60)
 
     #Movimiento Paleta Izquierda
     teclas = pygame.key.get_pressed()
@@ -53,6 +58,7 @@ while ejecutando:
     if paleta2.bottom > 800:
         paleta2.bottom = 800
     
+
 
     
     
