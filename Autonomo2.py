@@ -71,6 +71,11 @@ while ejecutando:
     #Velocidad de Pelota
     pelota.x += vel_x
     pelota.y += vel_y
+
+    #Limitar Pelota
+    if pelota.top <= 0 or pelota.bottom >= 800:
+        vel_y *= -1
+        
     
 
 
