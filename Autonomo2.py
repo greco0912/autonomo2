@@ -23,6 +23,22 @@ while ejecutando:
     pygame.draw.rect(pantalla, (0, 0, 0), paleta2)
     pygame.display.flip()
 
+    #Movimiento Paleta Izquierda
+    teclas = pygame.key.get_pressed()
+    if teclas [pygame.K_w]:
+        paleta.y -= 5
+
+    if teclas[pygame.K_s]:
+        paleta.y += 5
+
+    #Movimiento Paleta Derecha
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_o]:
+        paleta2.y -= 5
+
+    if teclas[pygame.K_l]:
+        paleta2.y += 5
+
 
 
     
