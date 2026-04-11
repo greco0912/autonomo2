@@ -10,6 +10,11 @@ paleta = pygame.Rect(50, 300, 10, 100)
 
 paleta2 = pygame.Rect(940, 300, 10, 100)
 
+pelota = pygame.Rect(500, 400, 10, 10)
+#velocidad de pelota
+vel_x = 3
+vel_y = 3
+
 clock = pygame.time.Clock()
 
 while ejecutando:
@@ -23,7 +28,12 @@ while ejecutando:
     pygame.draw.rect(pantalla, (0, 0, 0), paleta)
     #PALETA DERECHA
     pygame.draw.rect(pantalla, (0, 0, 0), paleta2)
+    #PELOTA
+    pygame.draw.rect(pantalla, (0, 0, 0,), pelota)
+    #Actualiza pantalla
     pygame.display.flip()
+    
+
 
     #Limitar FPS
     clock.tick(60)
@@ -57,6 +67,10 @@ while ejecutando:
     
     if paleta2.bottom > 800:
         paleta2.bottom = 800
+
+    #Velocidad de Pelota
+    pelota.x += vel_x
+    pelota.y += vel_y
     
 
 
