@@ -9,6 +9,8 @@ Se elaboraron diagramas de flujo con el fin de representar la lógica del progra
 Finalmente, se realizaron commits desde el inicio del proyecto, lo que permite visualizar un registro completo y ordenado de todos los cambios realizados a lo largo del desarrollo.
 Asignatura: Lógica de Programación 
 
-Ing Monica Patricia Salazar Tapiza
+Ing: Monica Patricia Salazar Tapiza
 
 Fecha: 12/04/2026
+
+att: Jose Flores
