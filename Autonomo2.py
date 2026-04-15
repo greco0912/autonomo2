@@ -10,6 +10,8 @@ paleta = pygame.Rect(50, 300, 10, 100)
 
 paleta2 = pygame.Rect(940, 300, 10, 100) 
 
+aumento_de_velocidad = 0
+
 puntos1 = 0 #Jugador Izquierdo
 puntos2 = 0 #Jugador Derecha
 
@@ -53,10 +55,10 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     #Movimiento Paleta Izquierda
     teclas = pygame.key.get_pressed() #Obtengo el estado del teclado para saber qué teclas están siendo presionadas.
     if teclas [pygame.K_w]:
-        paleta.y -= 5
+        paleta.y -= 5 + aumento_de_velocidad
 
     if teclas[pygame.K_s]: #Muevo la paleta izquierda hacia arriba o abajo dependiendo de las teclas presionadas
-        paleta.y += 5
+        paleta.y += 5 + aumento_de_velocidad
 
     #Limitar paleta izquiera
     if paleta.top < 0:
@@ -68,10 +70,10 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     #Movimiento Paleta Derecha
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_o]:
-        paleta2.y -= 5
+        paleta2.y -= 5 + aumento_de_velocidad
 
     if teclas[pygame.K_l]: #Controlo la paleta derecha con otras teclas para el segundo jugador
-        paleta2.y += 5
+        paleta2.y += 5 + aumento_de_velocidad
 
     #Limitar paleta derecha
     if paleta2.top < 0:
@@ -91,29 +93,30 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
     #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
     if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
-        vel_x *= -1.05
-        vel_y *=  1.02
+        vel_x *= -1.10
+        vel_y *=  1.10
+        aumento_de_velocidad += 0.5
 
     if abs(vel_x) > 10:
-        vel_x = 10 if vel_x > 0 else -10
-        vel_y = 10 if vel_y > 0 else -10
+        vel_x = 10 if vel_x > 0 else -20
+        vel_y = 10 if vel_y > 0 else -20
 
     if pelota.left <= 0:
         puntos2 += 1
         pelota.x = 500
         pelota.y = 400
-        vel_x *= -1
         vel_x = 3
         vel_y = 3
+        aumento_de_velocidad = 0
 
 
     if pelota.right >= 1000:
         puntos1 += 1
         pelota.x = 500
         pelota.y = 400
-        vel_x *= -1
-        vel_x = 3
+        vel_x = -3
         vel_y = 3
+        aumento_de_velocidad = 0
 
     if puntos1 == 5:
         print("Jugador 1 gana")
