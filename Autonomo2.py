@@ -22,12 +22,16 @@ vel_y = 3 #Defino la velocidad de la pelota en los ejes X y Y, lo que permitirá
 
 clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la velocidad del juego, es decir, los FPS
 
+fuente = pygame.font.Font(None, 50) #fuente para crea puntaje 
+
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
         if evento.type == pygame.QUIT:
             ejecutando = False #Si el usuario cierra la ventana, cambio la variable ejecutando a falso para salir del bucle
 
     pantalla.fill((255, 255, 255)) #Limpio la pantalla pintándola de blanco para evitar que queden rastros de los objetos
+
+    texto = fuente.render(f"{puntos1}  -  {puntos2}", True, (0, 0, 0)) #fuente
 
     #PALETA IZQUIERDA
     pygame.draw.rect(pantalla, (0, 0, 0), paleta)
@@ -36,6 +40,9 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     #PELOTA
     pygame.draw.rect(pantalla, (0, 0, 0,), pelota) #Dibujo en pantalla las paletas y la pelota usando rectángulos de color negro
     #Actualiza pantalla
+
+    pantalla.blit(texto, (450, 50)) #Dibujar en pantalla
+
     pygame.display.flip() #Actualizo la pantalla para mostrar los cambios realizados en cada ciclo
     
 
@@ -84,15 +91,40 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
     #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
     if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
-        vel_x *= -1
+        vel_x *= -1.05
+        vel_y *=  1.02
+
+    if abs(vel_x) > 10:
+        vel_x = 10 if vel_x > 0 else -10
+        vel_y = 10 if vel_y > 0 else -10
 
     if pelota.left <= 0:
         puntos2 += 1
+        pelota.x = 500
+        pelota.y = 400
+        vel_x *= -1
+        vel_x = 3
+        vel_y = 3
+
 
     if pelota.right >= 1000:
         puntos1 += 1
+        pelota.x = 500
+        pelota.y = 400
+        vel_x *= -1
+        vel_x = 3
+        vel_y = 3
 
-    print(puntos1, puntos2)
+    if puntos1 == 5:
+        print("Jugador 1 gana")
+
+    if puntos2 == 5:
+        print("Jugador 2 gana")
+     
+      
+
+
+    
 
 
 
