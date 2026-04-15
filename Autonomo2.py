@@ -10,8 +10,6 @@ paleta = pygame.Rect(50, 300, 10, 100)
 
 paleta2 = pygame.Rect(940, 300, 10, 100) 
 
-aumento_de_velocidad = 0
-
 puntos1 = 0 #Jugador Izquierdo
 puntos2 = 0 #Jugador Derecha
 
@@ -25,6 +23,8 @@ vel_y = 3 #Defino la velocidad de la pelota en los ejes X y Y, lo que permitirá
 clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la velocidad del juego, es decir, los FPS
 
 fuente = pygame.font.Font(None, 50) #fuente para crea puntaje 
+
+ganador = None
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
@@ -45,6 +45,15 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
     pantalla.blit(texto, (450, 50)) #Dibujar en pantalla
 
+    if ganador:
+        pantalla.blit(
+            fuente.render(f"{ganador} gana!", True, (255, 0, 0)),
+        (350, 300)
+    )
+
+    if ganador is None:
+        pelota.x += vel_x
+        pelota.y += vel_y
     pygame.display.flip() #Actualizo la pantalla para mostrar los cambios realizados en cada ciclo
     
 
@@ -55,10 +64,10 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     #Movimiento Paleta Izquierda
     teclas = pygame.key.get_pressed() #Obtengo el estado del teclado para saber qué teclas están siendo presionadas.
     if teclas [pygame.K_w]:
-        paleta.y -= 5 + aumento_de_velocidad
+        paleta.y -= 5
 
     if teclas[pygame.K_s]: #Muevo la paleta izquierda hacia arriba o abajo dependiendo de las teclas presionadas
-        paleta.y += 5 + aumento_de_velocidad
+        paleta.y += 5
 
     #Limitar paleta izquiera
     if paleta.top < 0:
@@ -70,10 +79,10 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     #Movimiento Paleta Derecha
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_o]:
-        paleta2.y -= 5 + aumento_de_velocidad
+        paleta2.y -= 5
 
     if teclas[pygame.K_l]: #Controlo la paleta derecha con otras teclas para el segundo jugador
-        paleta2.y += 5 + aumento_de_velocidad
+        paleta2.y += 5
 
     #Limitar paleta derecha
     if paleta2.top < 0:
@@ -82,10 +91,6 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     if paleta2.bottom > 800:
         paleta2.bottom = 800
 
-    #Velocidad de Pelota #Actualizo la posición de la pelota sumando su velocidad en los ejes X y Y.
-    pelota.x += vel_x
-    pelota.y += vel_y
-
     #Limitar Pelota arriba y abajo, Si la pelota toca los bordes superior o inferior, invierto su dirección vertical para simular un rebote
     if pelota.top <= 0 or pelota.bottom >= 800:
         vel_y *= -1
@@ -93,36 +98,36 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
     #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
     if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
-        vel_x *= -1.10
-        vel_y *=  1.10
-        aumento_de_velocidad += 0.5
+        vel_x *= -1.05
+        vel_y *=  1.02
 
     if abs(vel_x) > 10:
-        vel_x = 10 if vel_x > 0 else -20
-        vel_y = 10 if vel_y > 0 else -20
+        vel_x = 10 if vel_x > 0 else -10
+        vel_y = 10 if vel_y > 0 else -10
 
     if pelota.left <= 0:
         puntos2 += 1
         pelota.x = 500
         pelota.y = 400
+        vel_x *= -1
         vel_x = 3
         vel_y = 3
-        aumento_de_velocidad = 0
 
 
     if pelota.right >= 1000:
         puntos1 += 1
         pelota.x = 500
         pelota.y = 400
-        vel_x = -3
+        vel_x *= -1
+        vel_x = 3
         vel_y = 3
-        aumento_de_velocidad = 0
 
     if puntos1 == 5:
-        print("Jugador 1 gana")
+        ganador = "Jugador 1"
 
     if puntos2 == 5:
-        print("Jugador 2 gana")
+        ganador = "Jugador 2"
+
      
       
 
@@ -135,6 +140,7 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     
 pygame.quit() #Al salir del bucle, cierro correctamente Pygame
     
+
 
 
 
