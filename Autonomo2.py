@@ -10,6 +10,9 @@ paleta = pygame.Rect(50, 300, 10, 100)
 
 paleta2 = pygame.Rect(940, 300, 10, 100) 
 
+puntos1 = 0 #Jugador Izquierdo
+puntos2 = 0 #Jugador Derecha
+
 #Creo las paleta como un rectángulo, definiendo su posición y tamaño en pantalla. (x posicion horizontal, y posicion vertical, ancho y alto)
 
 pelota = pygame.Rect(500, 400, 10, 10) #Creo la pelota en el centro de la pantalla con un tamaño de 10 por 10
@@ -83,6 +86,13 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
     if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
         vel_x *= -1
 
+    if pelota.left <= 0:
+        puntos2 += 1
+
+    if pelota.right >= 1000:
+        puntos1 += 1
+
+    print(puntos1, puntos2)
 
 
 
