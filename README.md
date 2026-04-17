@@ -39,6 +39,9 @@ El desarrollo del software integra los conocimientos adquiridos en las cuatro un
 Información del Proyecto
 
 Asignatura: Lógica de Programación
+
 Estudiante: Jose Flores
+
 Docente: Ing. Estefanía Vanessa Heredia Jiménez
+
 Fecha: 16/04/2026
