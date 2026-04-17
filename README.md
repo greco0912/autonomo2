@@ -36,7 +36,8 @@ Integración de Contenidos
 
 El desarrollo del software integra los conocimientos adquiridos en las cuatro unidades de la materia, evidenciando la aplicación práctica de los conceptos estudiados.
 
- Información del Proyecto
+Información del Proyecto
+
 Asignatura: Lógica de Programación
 Estudiante: Jose Flores
 Docente: Ing. Estefanía Vanessa Heredia Jiménez
