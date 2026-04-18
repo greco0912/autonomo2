@@ -31,8 +31,11 @@ clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la ve
 fuente = pygame.font.Font(None, 50) #fuente para crea puntaje 
 
 ganador = None #Se inicializa la variable 'ganador' sin valor definido (None), Esta variable se utilizará para guardar el jugador que gane la partida.
-estado = "menu"
 
+pygame.mixer.init()
+
+rebote = pygame.mixer.Sound("sonidos/rebote.wav")
+punto = pygame.mixer.Sound("sonidos/punto.wav")
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
@@ -113,6 +116,7 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
         if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
             vel_x *= -1.05
             vel_y *=  1.02
+            rebote.play()
 
         if abs(vel_x) > 10: #Limita la velocidad máxima de la pelota para evitar que sea demasiado rápida
             vel_x = 10 if vel_x > 0 else -10
@@ -126,16 +130,18 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             vel_x = 3
             vel_y = 3 #Reinicia la velocidad
             pygame.time.delay(500) #Jugabilidad
+            punto.play()
 
 
         if pelota.right >= 1000: ## Si la pelota sale por el lado derecho de la pantalla se suma un punto al jugador 1
             puntos1 += 1
             pelota.x = 500
             pelota.y = 400
-            vel_x *= -1 #Invierte la dirección y reinicia la velocidad
-            vel_x = 3
+            vel_x *= 1 #Invierte la dirección y reinicia la velocidad
+            vel_x = -3
             vel_y = 3 #Reinicia la posición de la pelota al centro
             pygame.time.delay(500) #Jugabilidad
+            punto.play()
 
         if puntos1 >= 5:
             ganador = "Jugador 1"
