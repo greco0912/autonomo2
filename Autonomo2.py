@@ -24,8 +24,6 @@ boton_reinicio = pygame.Rect(400, 400, 200, 60)
 puntos1 = 0 #Puntaje jugador Izquierdo
 puntos2 = 0 #Puntaje jugador Derecha
 
-
-
 pelota = pygame.Rect(500, 400, 10, 10) #Creo la pelota en el centro de la pantalla con un tamaño de 10 por 10
 #velocidad de pelota
 vel_x = 3
@@ -46,6 +44,8 @@ pygame.mixer.init()
 # Carga de efectos de sonido
 rebote = pygame.mixer.Sound("sonidos/rebote.wav")  # Sonido cuando la pelota rebota
 punto = pygame.mixer.Sound("sonidos/punto.wav") # Sonido cuando se anota un punto
+inicio = pygame.mixer.Sound("sonidos/inicio.wav") #Sonido de inicio
+victoria = pygame.mixer.Sound("sonidos/win.wav") #Sonido cuando alguien Gane
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
@@ -54,6 +54,7 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
         if estado == "menu" and evento.type == pygame.MOUSEBUTTONDOWN: # Control de eventos según el estado del juego
              if boton_inicio.collidepoint(evento.pos):  # Verifica si se hace clic sobre el botón de inicio
+                 inicio.play() #Sonido de inicio
                  estado = "jugando"  # Cambia el estado a juego activo
 
         elif estado == "game_over" and evento.type == pygame.MOUSEBUTTONDOWN:
@@ -144,7 +145,7 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             pelota.y = 400
             vel_x = 3
             vel_y = 3 #Reinicia la velocidad
-            punto.play()
+            punto.play() # Sonido Rebote de Paleta
             pygame.time.delay(500) #Jugabilidad
             
 
@@ -155,18 +156,20 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             pelota.y = 400
             vel_x = -3
             vel_y = 3 #Reinicia la posición de la pelota al centro
-            punto.play()
+            punto.play() # Sonido Rebote de Paleta
             pygame.time.delay(500) #Jugabilidad
             
         # Verificación de condición de victoria durante el juego
         if puntos1 >= 5:
             ganador = "Jugador 1" # Se asigna el ganador
             estado = "game_over" # Se cambia el estado a fin del juego
+            victoria.play() # Sonido Victoria
 
 
         if puntos2 >= 5:
             ganador = "Jugador 2"
             estado = "game_over"
+            victoria.play() # Sonido Victoria
 
     # Pantalla de fin del juego
     elif estado == "game_over":
@@ -174,7 +177,7 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
         # Muestra el mensaje del jugador ganador en color rojo
         texto = fuente.render(f"{ganador} gana!", True, (255, 0, 0))
-        pantalla.blit(texto, (300, 300))
+        pantalla.blit(texto, (370, 300))
 
         # Dibuja el botón de reinicio
         pygame.draw.rect(pantalla, (0, 0, 0), boton_reinicio)
