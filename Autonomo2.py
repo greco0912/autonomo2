@@ -10,6 +10,10 @@ paleta = pygame.Rect(50, 300, 10, 100) #Paleta izquierda (Jugador 1)
 
 paleta2 = pygame.Rect(940, 300, 10, 100) #Paleta derecha (Jugador 2)
 
+boton_inicio = pygame.Rect(400, 300, 200, 60)
+
+boton_reinicio = pygame.Rect(400, 400, 200, 60)
+
 puntos1 = 0 #Jugador Izquierdo
 puntos2 = 0 #Jugador Derecha
 
@@ -20,121 +24,147 @@ pelota = pygame.Rect(500, 400, 10, 10) #Creo la pelota en el centro de la pantal
 vel_x = 3
 vel_y = 3 #Defino la velocidad de la pelota en los ejes X y Y, lo que permitirá que se mueva en diagonal
 
+estado = "menu"  # menu, jugando, game_over
+
 clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la velocidad del juego, es decir, los FPS
 
 fuente = pygame.font.Font(None, 50) #fuente para crea puntaje 
 
 ganador = None #Se inicializa la variable 'ganador' sin valor definido (None), Esta variable se utilizará para guardar el jugador que gane la partida.
+estado = "menu"
+
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
         if evento.type == pygame.QUIT:
             ejecutando = False #Si el usuario cierra la ventana, cambio la variable ejecutando a falso para salir del bucle
 
-    pantalla.fill((255, 255, 255)) #Limpio la pantalla pintándola de blanco para evitar que queden rastros de los objetos
+        if estado == "menu" and evento.type == pygame.MOUSEBUTTONDOWN:
+             if boton_inicio.collidepoint(evento.pos):
+                 estado = "jugando"
 
-    texto = fuente.render(f"{puntos1}  -  {puntos2}", True, (0, 0, 0)) #fuente
+        elif estado == "game_over" and evento.type == pygame.MOUSEBUTTONDOWN:
+             if boton_reinicio.collidepoint(evento.pos):
+              estado = "menu"
+              puntos1 = 0
+              puntos2 = 0
+              ganador = None
+              pelota.center = (500, 400)
 
-    #PALETA IZQUIERDA
-    pygame.draw.rect(pantalla, (0, 0, 0), paleta)
-    #PALETA DERECHA
-    pygame.draw.rect(pantalla, (0, 0, 0), paleta2)
-    #PELOTA
-    pygame.draw.rect(pantalla, (0, 0, 0,), pelota) #Dibujo en pantalla las paletas y la pelota usando rectángulos de color negro
-    #Actualiza pantalla
+    if estado == "menu":
+        pantalla.fill((255, 255, 255))
+        pygame.draw.rect(pantalla, (0, 0, 0), boton_inicio)
+        texto = fuente.render("INICIAR", True, (255, 255, 255))
+        pantalla.blit(texto, (420, 315))
 
-    pantalla.blit(texto, (450, 50)) #Dibujar en pantalla
+    elif estado == "jugando":
+        pantalla.fill((255, 255, 255))
 
-    if ganador: # Si ya existe un ganador, se muestra un mensaje en pantalla
-        pantalla.blit(
-            fuente.render(f"{ganador} gana!", True, (255, 0, 0)),   # Renderiza el texto en color rojo y Posición donde se mostrará el mensaje
-        (350, 300)
-    )
+        texto = fuente.render(f"{puntos1}  -  {puntos2}", True, (0, 0, 0))
+        pantalla.blit(texto, (450, 50))
 
-    if ganador is None: #Si aún no hay ganador, la pelota continúa moviéndose
-        pelota.x += vel_x #Movimiento horizontal de la pelota
+        #PALETA IZQUIERDA
+        pygame.draw.rect(pantalla, (0, 0, 0), paleta)
+        #PALETA DERECHA
+        pygame.draw.rect(pantalla, (0, 0, 0), paleta2)
+        #PELOTA
+        pygame.draw.rect(pantalla, (0, 0, 0,), pelota) #Dibujo en pantalla las paletas y la pelota usando rectángulos de color negro
+
+        #Movimeinto de Pelota
+        pelota.x += vel_x
         pelota.y += vel_y
+
+    #Movimiento Paleta Izquierda
+        teclas = pygame.key.get_pressed() #Obtengo el estado del teclado para saber qué teclas están siendo presionadas.
+        if teclas [pygame.K_w]:
+            paleta.y -= 5
+
+        if teclas[pygame.K_s]: #Muevo la paleta izquierda hacia arriba o abajo dependiendo de las teclas presionadas
+            paleta.y += 5
+
+        #Limitar paleta izquiera
+        if paleta.top < 0:
+            paleta.top = 0
+        
+        if paleta.bottom > 800:
+            paleta.bottom = 800 #Restringo el movimiento para que la paleta no salga de los límites de la pantalla
+
+        #Movimiento Paleta Derecha
+        teclas = pygame.key.get_pressed()
+        if teclas[pygame.K_o]:
+            paleta2.y -= 5
+
+        if teclas[pygame.K_l]: #Controlo la paleta derecha con otras teclas para el segundo jugador
+            paleta2.y += 5
+
+        #Limitar paleta derecha
+        if paleta2.top < 0:
+            paleta2.top = 0
+        
+        if paleta2.bottom > 800:
+            paleta2.bottom = 800
+
+        #Limitar Pelota arriba y abajo, Si la pelota toca los bordes superior o inferior, invierto su dirección vertical para simular un rebote
+        if pelota.top <= 0 or pelota.bottom >= 800:
+            vel_y *= -1
+            
+
+        #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
+        if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
+            vel_x *= -1.05
+            vel_y *=  1.02
+
+        if abs(vel_x) > 10: #Limita la velocidad máxima de la pelota para evitar que sea demasiado rápida
+            vel_x = 10 if vel_x > 0 else -10
+            vel_y = 10 if vel_y > 0 else -10
+
+        if pelota.left <= 0: # Si la pelota sale por el lado izquierdo de la pantalla se suma un punto al jugador 2
+            puntos2 += 1
+            pelota.x = 500 #Reinicia la posición de la pelota al centro
+            pelota.y = 400
+            vel_x *= -1 ## Invierte la dirección y reinicia la velocidad
+            vel_x = 3
+            vel_y = 3 #Reinicia la velocidad
+            pygame.time.delay(500) #Jugabilidad
+
+
+        if pelota.right >= 1000: ## Si la pelota sale por el lado derecho de la pantalla se suma un punto al jugador 1
+            puntos1 += 1
+            pelota.x = 500
+            pelota.y = 400
+            vel_x *= -1 #Invierte la dirección y reinicia la velocidad
+            vel_x = 3
+            vel_y = 3 #Reinicia la posición de la pelota al centro
+            pygame.time.delay(500) #Jugabilidad
+
+        if puntos1 >= 5:
+            ganador = "Jugador 1"
+            estado = "game_over"
+
+        if puntos2 >= 5:
+            ganador = "Jugador 2"
+            estado = "game_over"
+
+
+        # dibujar paletas, pelota, marcador
+
+    elif estado == "game_over":
+        pantalla.fill((255, 255, 255))
+
+        texto = fuente.render(f"{ganador} gana!", True, (255, 0, 0))
+        pantalla.blit(texto, (300, 300))
+
+        pygame.draw.rect(pantalla, (0, 0, 0), boton_reinicio)
+        texto2 = fuente.render("REINICIAR", True, (255, 255, 255))
+        pantalla.blit(texto2, (400, 415))
+ 
+    
     pygame.display.flip() #Actualizo la pantalla para mostrar los cambios realizados en cada ciclo
     
 
 
     #Limitar FPS
     clock.tick(60) #Limito el juego a 60 fotogramas por segundo para que funcione de forma fluida
-
-    #Movimiento Paleta Izquierda
-    teclas = pygame.key.get_pressed() #Obtengo el estado del teclado para saber qué teclas están siendo presionadas.
-    if teclas [pygame.K_w]:
-        paleta.y -= 5
-
-    if teclas[pygame.K_s]: #Muevo la paleta izquierda hacia arriba o abajo dependiendo de las teclas presionadas
-        paleta.y += 5
-
-    #Limitar paleta izquiera
-    if paleta.top < 0:
-        paleta.top = 0
-    
-    if paleta.bottom > 800:
-        paleta.bottom = 800 #Restringo el movimiento para que la paleta no salga de los límites de la pantalla
-
-    #Movimiento Paleta Derecha
-    teclas = pygame.key.get_pressed()
-    if teclas[pygame.K_o]:
-        paleta2.y -= 5
-
-    if teclas[pygame.K_l]: #Controlo la paleta derecha con otras teclas para el segundo jugador
-        paleta2.y += 5
-
-    #Limitar paleta derecha
-    if paleta2.top < 0:
-        paleta2.top = 0
-    
-    if paleta2.bottom > 800:
-        paleta2.bottom = 800
-
-    #Limitar Pelota arriba y abajo, Si la pelota toca los bordes superior o inferior, invierto su dirección vertical para simular un rebote
-    if pelota.top <= 0 or pelota.bottom >= 800:
-        vel_y *= -1
-        
-
-    #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
-    if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
-        vel_x *= -1.05
-        vel_y *=  1.02
-
-    if abs(vel_x) > 10: #Limita la velocidad máxima de la pelota para evitar que sea demasiado rápida
-        vel_x = 10 if vel_x > 0 else -10
-        vel_y = 10 if vel_y > 0 else -10
-
-    if pelota.left <= 0: # Si la pelota sale por el lado izquierdo de la pantalla se suma un punto al jugador 2
-        puntos2 += 1
-        pelota.x = 500 #Reinicia la posición de la pelota al centro
-        pelota.y = 400
-        vel_x *= -1 ## Invierte la dirección y reinicia la velocidad
-        vel_x = 3
-        vel_y = 3 #Reinicia la velocidad
-
-
-    if pelota.right >= 1000: ## Si la pelota sale por el lado derecho de la pantalla se suma un punto al jugador 1
-        puntos1 += 1
-        pelota.x = 500
-        pelota.y = 400
-        vel_x *= -1 #Invierte la dirección y reinicia la velocidad
-        vel_x = 3
-        vel_y = 3 #Reinicia la posición de la pelota al centro
-
-    if puntos1 == 5: # Con el operador == si pVerifica si el jugador 1 alcanza el puntaje para ganar
-        ganador = "Jugador 1"
-
-    if puntos2 == 5:
-        ganador = "Jugador 2" # Con el oprador == Verifica si el jugador 2 alcanza el puntaje para ganar
-
-     
-      
-
-
-    
-
-
 
     
     
