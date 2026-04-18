@@ -6,9 +6,9 @@ pygame.display.set_caption("ATARI PONG JOSE FLORES") #Asigno un título a la ven
 
 ejecutando = True #Creo una variable booleana que controla el bucle principal del juego. Mientras sea verdadera, el juego seguirá ejecutándose
 
-paleta = pygame.Rect(50, 300, 10, 100)
+paleta = pygame.Rect(50, 300, 10, 100) #Paleta izquierda (Jugador 1)
 
-paleta2 = pygame.Rect(940, 300, 10, 100) 
+paleta2 = pygame.Rect(940, 300, 10, 100) #Paleta derecha (Jugador 2)
 
 puntos1 = 0 #Jugador Izquierdo
 puntos2 = 0 #Jugador Derecha
@@ -24,7 +24,7 @@ clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la ve
 
 fuente = pygame.font.Font(None, 50) #fuente para crea puntaje 
 
-ganador = None
+ganador = None #Se inicializa la variable 'ganador' sin valor definido (None), Esta variable se utilizará para guardar el jugador que gane la partida.
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
@@ -45,14 +45,14 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
     pantalla.blit(texto, (450, 50)) #Dibujar en pantalla
 
-    if ganador:
+    if ganador: # Si ya existe un ganador, se muestra un mensaje en pantalla
         pantalla.blit(
-            fuente.render(f"{ganador} gana!", True, (255, 0, 0)),
+            fuente.render(f"{ganador} gana!", True, (255, 0, 0)),   # Renderiza el texto en color rojo y Posición donde se mostrará el mensaje
         (350, 300)
     )
 
-    if ganador is None:
-        pelota.x += vel_x
+    if ganador is None: #Si aún no hay ganador, la pelota continúa moviéndose
+        pelota.x += vel_x #Movimiento horizontal de la pelota
         pelota.y += vel_y
     pygame.display.flip() #Actualizo la pantalla para mostrar los cambios realizados en cada ciclo
     
@@ -101,32 +101,32 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
         vel_x *= -1.05
         vel_y *=  1.02
 
-    if abs(vel_x) > 10:
+    if abs(vel_x) > 10: #Limita la velocidad máxima de la pelota para evitar que sea demasiado rápida
         vel_x = 10 if vel_x > 0 else -10
         vel_y = 10 if vel_y > 0 else -10
 
-    if pelota.left <= 0:
+    if pelota.left <= 0: # Si la pelota sale por el lado izquierdo de la pantalla se suma un punto al jugador 2
         puntos2 += 1
-        pelota.x = 500
+        pelota.x = 500 #Reinicia la posición de la pelota al centro
         pelota.y = 400
-        vel_x *= -1
+        vel_x *= -1 ## Invierte la dirección y reinicia la velocidad
         vel_x = 3
-        vel_y = 3
+        vel_y = 3 #Reinicia la velocidad
 
 
-    if pelota.right >= 1000:
+    if pelota.right >= 1000: ## Si la pelota sale por el lado derecho de la pantalla se suma un punto al jugador 1
         puntos1 += 1
         pelota.x = 500
         pelota.y = 400
-        vel_x *= -1
+        vel_x *= -1 #Invierte la dirección y reinicia la velocidad
         vel_x = 3
-        vel_y = 3
+        vel_y = 3 #Reinicia la posición de la pelota al centro
 
-    if puntos1 == 5:
+    if puntos1 == 5: # Con el operador == si pVerifica si el jugador 1 alcanza el puntaje para ganar
         ganador = "Jugador 1"
 
     if puntos2 == 5:
-        ganador = "Jugador 2"
+        ganador = "Jugador 2" # Con el oprador == Verifica si el jugador 2 alcanza el puntaje para ganar
 
      
       
