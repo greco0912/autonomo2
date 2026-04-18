@@ -6,25 +6,33 @@ pygame.display.set_caption("ATARI PONG JOSE FLORES") #Asigno un título a la ven
 
 ejecutando = True #Creo una variable booleana que controla el bucle principal del juego. Mientras sea verdadera, el juego seguirá ejecutándose
 
+#Creo las paleta como un rectángulo, definiendo su posición y tamaño en pantalla. (x posicion horizontal, y posicion vertical, ancho y alto)
 paleta = pygame.Rect(50, 300, 10, 100) #Paleta izquierda (Jugador 1)
 
 paleta2 = pygame.Rect(940, 300, 10, 100) #Paleta derecha (Jugador 2)
 
+
+# Creación del botón de inicio del juego
+# Se define como un rectángulo con posición (x, y) y dimensiones (ancho, alto)
 boton_inicio = pygame.Rect(400, 300, 200, 60)
 
+# Creación del botón de reinicio del juego
+# Permite volver a iniciar la partida una vez finalizada
 boton_reinicio = pygame.Rect(400, 400, 200, 60)
 
-puntos1 = 0 #Jugador Izquierdo
-puntos2 = 0 #Jugador Derecha
+# Inicialización del puntaje de los jugadores
+puntos1 = 0 #Puntaje jugador Izquierdo
+puntos2 = 0 #Puntaje jugador Derecha
 
-#Creo las paleta como un rectángulo, definiendo su posición y tamaño en pantalla. (x posicion horizontal, y posicion vertical, ancho y alto)
+
 
 pelota = pygame.Rect(500, 400, 10, 10) #Creo la pelota en el centro de la pantalla con un tamaño de 10 por 10
 #velocidad de pelota
 vel_x = 3
 vel_y = 3 #Defino la velocidad de la pelota en los ejes X y Y, lo que permitirá que se mueva en diagonal
 
-estado = "menu"  # menu, jugando, game_over
+estado = "menu"  # Variable que controla el estado actual del juego (menú, jugando o fin del juego)
+
 
 clock = pygame.time.Clock() #Creo un objeto clock que me permite controlar la velocidad del juego, es decir, los FPS
 
@@ -32,37 +40,45 @@ fuente = pygame.font.Font(None, 50) #fuente para crea puntaje
 
 ganador = None #Se inicializa la variable 'ganador' sin valor definido (None), Esta variable se utilizará para guardar el jugador que gane la partida.
 
+# Inicialización del sistema de sonido de Pygame
 pygame.mixer.init()
 
-rebote = pygame.mixer.Sound("sonidos/rebote.wav")
-punto = pygame.mixer.Sound("sonidos/punto.wav")
+# Carga de efectos de sonido
+rebote = pygame.mixer.Sound("sonidos/rebote.wav")  # Sonido cuando la pelota rebota
+punto = pygame.mixer.Sound("sonidos/punto.wav") # Sonido cuando se anota un punto
 
 while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mientras la variable ‘ejecutando’ sea verdadera
     for evento in pygame.event.get(): #Recorro todos los eventos que ocurren en el juego, como presionar teclas o cerrar la ventana
         if evento.type == pygame.QUIT:
             ejecutando = False #Si el usuario cierra la ventana, cambio la variable ejecutando a falso para salir del bucle
 
-        if estado == "menu" and evento.type == pygame.MOUSEBUTTONDOWN:
-             if boton_inicio.collidepoint(evento.pos):
-                 estado = "jugando"
+        if estado == "menu" and evento.type == pygame.MOUSEBUTTONDOWN: # Control de eventos según el estado del juego
+             if boton_inicio.collidepoint(evento.pos):  # Verifica si se hace clic sobre el botón de inicio
+                 estado = "jugando"  # Cambia el estado a juego activo
 
         elif estado == "game_over" and evento.type == pygame.MOUSEBUTTONDOWN:
-             if boton_reinicio.collidepoint(evento.pos):
-              estado = "menu"
+             if boton_reinicio.collidepoint(evento.pos): # Verifica si se hace clic sobre el botón de reinicio
+              estado = "menu" # Regresa al menú principa
+              # Reinicia las variables del juego
               puntos1 = 0
               puntos2 = 0
               ganador = None
-              pelota.center = (500, 400)
+              pelota.center = (500, 400)  # Reposiciona la pelota al centro
 
+    # Renderizado de pantallas según el estado del juego
+    # Pantalla de menú
     if estado == "menu":
-        pantalla.fill((255, 255, 255))
-        pygame.draw.rect(pantalla, (0, 0, 0), boton_inicio)
+        pantalla.fill((255, 255, 255)) 
+        # Dibuja el botón de inicio
+        pygame.draw.rect(pantalla, (0, 0, 0), boton_inicio)   
+         # Renderiza y muestra el texto del botón
         texto = fuente.render("INICIAR", True, (255, 255, 255))
         pantalla.blit(texto, (420, 315))
 
-    elif estado == "jugando":
-        pantalla.fill((255, 255, 255))
+    elif estado == "jugando": # Pantalla de juego activo
+        pantalla.fill((255, 255, 255))  # Limpia la pantalla
 
+        # Muestra el marcador en pantalla
         texto = fuente.render(f"{puntos1}  -  {puntos2}", True, (0, 0, 0))
         pantalla.blit(texto, (450, 50))
 
@@ -114,8 +130,8 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
 
         #Choque en Paleta o Paleta 2, Si la pelota colisiona con alguna paleta, invierto su dirección horizontal
         if pelota.colliderect(paleta) or pelota.colliderect(paleta2):
-            vel_x *= -1.05
-            vel_y *=  1.02
+            vel_x *= -1.10
+            vel_y *=  1.05
             rebote.play()
 
         if abs(vel_x) > 10: #Limita la velocidad máxima de la pelota para evitar que sea demasiado rápida
@@ -129,8 +145,9 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             vel_x *= -1 ## Invierte la dirección y reinicia la velocidad
             vel_x = 3
             vel_y = 3 #Reinicia la velocidad
-            pygame.time.delay(500) #Jugabilidad
             punto.play()
+            pygame.time.delay(500) #Jugabilidad
+            
 
 
         if pelota.right >= 1000: ## Si la pelota sale por el lado derecho de la pantalla se suma un punto al jugador 1
@@ -140,27 +157,30 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             vel_x *= 1 #Invierte la dirección y reinicia la velocidad
             vel_x = -3
             vel_y = 3 #Reinicia la posición de la pelota al centro
-            pygame.time.delay(500) #Jugabilidad
             punto.play()
-
+            pygame.time.delay(500) #Jugabilidad
+            
+        # Verificación de condición de victoria durante el juego
         if puntos1 >= 5:
-            ganador = "Jugador 1"
-            estado = "game_over"
+            ganador = "Jugador 1" # Se asigna el ganador
+            estado = "game_over" # Se cambia el estado a fin del juego
+
 
         if puntos2 >= 5:
             ganador = "Jugador 2"
             estado = "game_over"
 
-
-        # dibujar paletas, pelota, marcador
-
+    # Pantalla de fin del juego
     elif estado == "game_over":
-        pantalla.fill((255, 255, 255))
+        pantalla.fill((255, 255, 255)) # Limpia la pantalla con fondo blanco
 
+        # Muestra el mensaje del jugador ganador en color rojo
         texto = fuente.render(f"{ganador} gana!", True, (255, 0, 0))
         pantalla.blit(texto, (300, 300))
 
+        # Dibuja el botón de reinicio
         pygame.draw.rect(pantalla, (0, 0, 0), boton_reinicio)
+        # Renderiza y muestra el texto del botón de reinicio
         texto2 = fuente.render("REINICIAR", True, (255, 255, 255))
         pantalla.blit(texto2, (400, 415))
  
