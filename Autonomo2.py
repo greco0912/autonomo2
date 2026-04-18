@@ -142,7 +142,6 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             puntos2 += 1
             pelota.x = 500 #Reinicia la posición de la pelota al centro
             pelota.y = 400
-            vel_x *= -1 ## Invierte la dirección y reinicia la velocidad
             vel_x = 3
             vel_y = 3 #Reinicia la velocidad
             punto.play()
@@ -154,7 +153,6 @@ while ejecutando: #Inicio el bucle principal, que se ejecuta continuamente mient
             puntos1 += 1
             pelota.x = 500
             pelota.y = 400
-            vel_x *= 1 #Invierte la dirección y reinicia la velocidad
             vel_x = -3
             vel_y = 3 #Reinicia la posición de la pelota al centro
             punto.play()
