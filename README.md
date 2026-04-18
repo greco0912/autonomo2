@@ -1,16 +1,47 @@
-Desarrollo de Juego Atari Pong
+Desarrollo de Juego: Atari Pong
+Introducción
 
-En el presente trabajo utilicé la librería Pygame, una biblioteca de Python diseñada para el desarrollo de videojuegos y aplicaciones multimedia, que facilita la creación de gráficos, manejo de eventos, e interacción con el usuario.
+En el presente proyecto desarrolle una versión del clásico videojuego Atari Pong utilizando la librería Pygame, una herramienta de Python orientada al desarrollo de videojuegos y aplicaciones multimedia. Esta biblioteca facilita la creación de gráficos, la gestión de eventos y la interacción con el usuario.
 
-En el desarrollo del proyecto se emplearon principalmente estructuras básicas de programación como variables, condicionales if, el operador lógico or, bucles while y el valor booleano True. Sin embargo, esto no significa que en futuras mejoras del proyecto no se puedan incorporar otros operadores, estructuras de control o funcionalidades más avanzadas.
+Objetivo del Proyecto
 
-Se elaboraron diagramas de flujo con el fin de representar la lógica del programa. No obstante, estos pueden sufrir modificaciones si se presentan cambios o problemas durante el desarrollo del código.
+El objetivo principal es aplicar los conocimientos adquiridos en la asignatura Lógica de Programación, integrando conceptos fundamentales mediante el desarrollo de un software funcional e interactivo.
 
-Finalmente, se realizaron commits desde el inicio del proyecto, lo que permite visualizar un registro completo y ordenado de todos los cambios realizados a lo largo del desarrollo.
-Asignatura: Lógica de Programación 
+Funcionalidades del Programa
 
-Ing: ESTEFANIA VANESSA HEREDIA JIMENEZ
+El software desarrollado corresponde a un juego de dos jugadores que combina habilidad, destreza y rapidez de reacción. Entre sus principales características se destacan:
 
-Fecha: 12/04/2026
+Juego competitivo para 2 jugadores
+Sistema de puntuación (gana el mejor de 5 rondas)
+Incremento progresivo de la velocidad de la pelota para aumentar la dificultad
+Interacción en tiempo real mediante controles del teclado
 
-att: Jose Flores
+Conceptos Aplicados
+
+Durante el desarrollo del proyecto implementen diversos conceptos fundamentales de programación, tales como:
+
+Variables
+Estructuras condicionales (if)
+Operadores lógicos (or)
+Bucles (while)
+Uso de valores booleanos (True)
+
+Metodología de Desarrollo
+
+Elabore diagramas de flujo para representar la lógica del programa, facilitando la planificación y comprensión del funcionamiento del sistema. Estos diagramas pueden ajustarse en caso de futuras mejoras o cambios en el código.
+
+Asimismo, Realice un control de versiones mediante commits en GitHub desde el inicio del proyecto, permitiendo llevar un registro organizado y detallado de todos los avances.
+
+Integración de Contenidos
+
+El desarrollo del software integra los conocimientos adquiridos en las cuatro unidades de la materia, evidenciando la aplicación práctica de los conceptos estudiados.
+
+Información del Proyecto
+
+Asignatura: Lógica de Programación
+
+Estudiante: Jose Flores
+
+Docente: Ing. Estefanía Vanessa Heredia Jiménez
+
+Fecha: 16/04/2026
